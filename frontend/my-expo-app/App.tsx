@@ -1,13 +1,8 @@
-import { View, Text } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import "./global.css"; // Ensure this import is here and correct
+import { ExpoRoot } from "expo-router";
+import { registerRootComponent } from "expo";
+import "nativewind";
 
-export default function App() {
-  return (
-    // Using NativeWind's className
-    <View className="flex-1 items-center justify-center bg-green-500">
-      <Text className="text-white text-lg font-bold">NativeWind Test</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+// @ts-expect-error
+const App = () => <ExpoRoot context={require.context("./app")} />;
+
+export default registerRootComponent(App);
