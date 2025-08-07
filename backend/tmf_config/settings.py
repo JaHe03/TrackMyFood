@@ -37,7 +37,7 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS_STRING = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost')
+ALLOWED_HOSTS_STRING = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost,192.168.1.154')
 ALLOWED_HOSTS = ALLOWED_HOSTS_STRING.split(',') if ALLOWED_HOSTS_STRING else []
 
 
@@ -167,7 +167,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000", # Your Django backend (for browsable API)
     "http://localhost:19006", # Default Expo Web port
     "http://localhost:3000", # Common React dev port
- ]
+    "http://192.168.1.154:8000", # Your computer's IP for device access
+]
+
+# For development, also allow all origins from your local network
+CORS_ALLOW_ALL_ORIGINS = True  # Only for development!
 
 
 # rest_framework settings
@@ -183,8 +187,10 @@ REST_FRAMEWORK = {
 
 REST_AUTH = {
     'USE_JWT': True,
-    'JWT_AUTH_HTTPONLY': True,
+    'JWT_AUTH_HTTPONLY': False,  # Set to False for now to get refresh token in response
     'SESSION_LOGIN': False,
+    'REGISTER_SERIALIZER': 'users.serializer.CustomRegisterSerializer',
+    'USER_DETAILS_SERIALIZER': 'users.serializer.CustomUserDetailsSerializer',
 }
 
 SIMPLE_JWT = {

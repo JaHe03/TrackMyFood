@@ -19,10 +19,20 @@ class CustomUserAdmin(UserAdmin):
         'currWeight', # Use the field name from models.py
         'activityLevel', # Use the field name from models.py
         'unitPreference', # Use the field name from models.py
+        'date_joined',
+        'last_login',
     )
     
+    list_filter = UserAdmin.list_filter + (
+        'activityLevel',
+        'unitPreference',
+    )
+    
+    search_fields = UserAdmin.search_fields + (
+        'dob',
+    )
 
-     # Copy default fieldsets
+    # Copy default fieldsets
     fieldsets = list(UserAdmin.fieldsets)
 
     # Add a new fieldset for your custom profile data
@@ -45,8 +55,12 @@ class CustomUserAdmin(UserAdmin):
              break
 
 
-
 # --- THIS IS THE CRUCIAL LINE ---
 # Register your CustomUser model with the CustomUserAdmin options
 admin.site.register(CustomUser, CustomUserAdmin)
 # ---------------------------------
+
+# Customize admin site headers
+admin.site.site_header = "TrackMyFood Admin"
+admin.site.site_title = "TrackMyFood Admin Portal"
+admin.site.index_title = "Welcome to TrackMyFood Administration"
